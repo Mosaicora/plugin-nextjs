@@ -1,0 +1,66 @@
+{
+  "name": "@mosaicora/plugin-nextjs",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Native Next.js App Router helpers for Mosaicora OG images.",
+  "license": "MIT",
+  "author": "Mosaicora",
+  "homepage": "https://github.com/Mosaicora/plugin-nextjs#readme",
+  "bugs": {
+    "url": "https://github.com/Mosaicora/plugin-nextjs/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mosaicora/plugin-nextjs.git"
+  },
+  "keywords": [
+    "mosaicora",
+    "nextjs",
+    "next",
+    "open-graph",
+    "og-image",
+    "json-ld",
+    "seo"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "prepack": "pnpm build && node scripts/verify-package.mjs",
+    "test": "node --test test/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mosaicora/plugin-mosaicora-core": "^1.0.0"
+  },
+  "peerDependencies": {
+    "next": "^16.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "^5"
+  }
+}
