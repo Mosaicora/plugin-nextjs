@@ -21,7 +21,7 @@ if (packageJson.private === true) {
 if (packageJson.publishConfig?.access !== "public") {
   throw new Error("publishConfig.access must be public.");
 }
-if (packageJson.dependencies?.["@mosaicora/plugin-mosaicora-core"] !== "^1.0.0") {
+if (packageJson.dependencies?.["@mosaicora/plugin-mosaicora-core"] !== "^1.0.1") {
   throw new Error("The Next.js package must depend on the stable core v1 contract.");
 }
 if (packageJson.main !== "./dist/index.js" || packageJson.types !== "./dist/index.d.ts") {

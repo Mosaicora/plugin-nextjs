@@ -25,6 +25,7 @@ export default function ExamplePage() {
     url: "https://example.com/products/view?sku=123",
     mosaicoraOg: {
       schemaVersion: 3,
+      templateId: "6a36446a0021410e8044",
       semanticValues: {
         "content.title": "Example page",
         "content.description": "A professional example preview.",

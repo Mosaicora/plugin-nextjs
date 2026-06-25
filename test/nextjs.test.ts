@@ -74,6 +74,7 @@ test("MosaicoraOgJsonLd renders the v3 contract", () => {
       name: "How Mosaicora Generates Open Graph Images",
       mosaicoraOg: {
         schemaVersion: 3,
+        templateId: "6a36446a0021410e8044",
         semanticValues: {
           "content.title": "How Mosaicora Generates Open Graph Images",
           "person.name": "Mosaicora Team",
@@ -86,6 +87,7 @@ test("MosaicoraOgJsonLd renders the v3 contract", () => {
 
   assert.match(html, /application\/ld\+json/);
   assert.match(html, /"schemaVersion":3/);
+  assert.match(html, /"templateId":"6a36446a0021410e8044"/);
   assert.match(html, /"semanticValues"/);
   assert.match(html, /"content.title"/);
 });

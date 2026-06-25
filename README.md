@@ -60,6 +60,7 @@ export default function ProductJsonLd() {
       }}
       mosaicoraOg={{
         schemaVersion: 3,
+        templateId: "6a36446a0021410e8044",
         semanticValues: {
           "content.title": "Example product",
           "content.description": "A polished preview for every product page.",
@@ -89,7 +90,7 @@ the other public core types.
 
 ## Development
 
-Core `1.0.0` must be available from npm before installing this repository.
+Core `1.0.1` must be available from npm before installing this repository.
 
 ```bash
 pnpm install

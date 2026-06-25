@@ -1,11 +1,11 @@
 {
   "name": "@mosaicora/plugin-nextjs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Native Next.js App Router helpers for Mosaicora OG images.",
   "license": "MIT",
   "author": "Mosaicora",
-  "homepage": "https://github.com/Mosaicora/plugin-nextjs#readme",
+  "homepage": "https://mosaicora.io/integrations/nextjs",
   "bugs": {
     "url": "https://github.com/Mosaicora/plugin-nextjs/issues"
   },
@@ -50,7 +50,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@mosaicora/plugin-mosaicora-core": "^1.0.0"
+    "@mosaicora/plugin-mosaicora-core": "^1.0.1"
   },
   "peerDependencies": {
     "next": "^16.0.0",
