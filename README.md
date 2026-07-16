@@ -27,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
       canonicalHref: canonicalUrl,
       fallbackHref: canonicalUrl,
       alt: "Professional product preview",
-      cacheBuster: "monthly",
+      cacheVersion: "release-2026-07",
     }),
   };
 }
@@ -35,8 +35,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
 The generated image URL preserves genuine canonical query parameters in
 deterministic order, places `.jpg` before the query string, ignores hashes, and
-keeps UTF-8 paths readable. `cacheBuster` is optional; when enabled it adds a
-UTC-based `v` parameter (for example, `?v=2026-07` for `"monthly"`).
+keeps UTF-8 paths readable. `cacheVersion` sets an explicit `v` parameter (for
+example, `?v=release-2026-07`). `cacheBuster` is optional and adds a UTC-based
+`v` parameter (for example, `?v=2026-07` for `"monthly"`) when no manual
+version is supplied. A non-empty `cacheVersion` takes precedence over
+`cacheBuster` and over any `v` in the canonical URL.
 
 Social platforms can store a link preview and image after the first crawl.
 Changing the image URL helps a platform fetch a fresh asset when it re-scrapes
@@ -100,7 +103,7 @@ the other public core types.
 
 ## Development
 
-Core `1.0.2` must be available from npm before installing this repository.
+Core `1.0.3` must be available from npm before installing this repository.
 
 ```bash
 pnpm install

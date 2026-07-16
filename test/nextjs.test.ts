@@ -101,6 +101,33 @@ test("createMosaicoraMetadata shares a cache-busting image URL across platforms"
   assert.equal(twitterUrl, openGraphUrl);
 });
 
+test("createMosaicoraMetadata shares an explicit cache version across platforms", () => {
+  const metadata = createMosaicoraMetadata({
+    siteId: "site-123",
+    fallbackHref: "https://example.com/products/view?v=legacy",
+    cacheBuster: "monthly",
+    cacheVersion: "release-42",
+  });
+  const openGraphImages = metadata.openGraph?.images;
+  const openGraphImage = Array.isArray(openGraphImages)
+    ? openGraphImages[0]
+    : openGraphImages;
+  const openGraphUrl =
+    typeof openGraphImage === "string" || openGraphImage instanceof URL
+      ? String(openGraphImage)
+      : String(openGraphImage?.url);
+  const twitterImages = metadata.twitter?.images;
+  const twitterImage = Array.isArray(twitterImages)
+    ? twitterImages[0]
+    : twitterImages;
+
+  assert.equal(
+    openGraphUrl,
+    "https://cdn.mosaicora.io/s/site-123/products/view.jpg?v=release-42",
+  );
+  assert.equal(String(twitterImage), openGraphUrl);
+});
+
 test("MosaicoraOgJsonLd renders the v3 contract", () => {
   const html = renderToStaticMarkup(
     MosaicoraOgJsonLd({
