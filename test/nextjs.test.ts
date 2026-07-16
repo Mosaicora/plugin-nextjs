@@ -3,9 +3,11 @@ import test from "node:test";
 import { renderToStaticMarkup } from "react-dom/server";
 
 import {
+  buildOgImageCacheBuster,
   createMosaicoraMetadata,
   getMosaicoraOgImageUrl,
   MosaicoraOgJsonLd,
+  type OgImageCacheBuster,
 } from "../src/index.ts";
 
 test("getMosaicoraOgImageUrl preserves and sorts all homepage queries", () => {
@@ -65,6 +67,38 @@ test("createMosaicoraMetadata returns the expected Next metadata shape", () => {
       images: ["https://cdn.mosaicora.io/s/site-123/products/view.jpg?sku=123"],
     },
   });
+});
+
+test("createMosaicoraMetadata shares a cache-busting image URL across platforms", () => {
+  const cacheBuster: OgImageCacheBuster = "monthly";
+  const metadata = createMosaicoraMetadata({
+    siteId: "site-123",
+    fallbackHref: "https://example.com/products/view",
+    cacheBuster,
+  });
+  const openGraphImages = metadata.openGraph?.images;
+  const openGraphImage = Array.isArray(openGraphImages)
+    ? openGraphImages[0]
+    : openGraphImages;
+  const openGraphUrl =
+    typeof openGraphImage === "string" || openGraphImage instanceof URL
+      ? String(openGraphImage)
+      : String(openGraphImage?.url);
+  const twitterImages = metadata.twitter?.images;
+  const twitterImage = Array.isArray(twitterImages)
+    ? twitterImages[0]
+    : twitterImages;
+  const twitterUrl = String(twitterImage);
+
+  assert.match(
+    buildOgImageCacheBuster(cacheBuster),
+    /^\d{4}-\d{2}$/,
+  );
+  assert.match(
+    openGraphUrl,
+    /^https:\/\/cdn\.mosaicora\.io\/s\/site-123\/products\/view\.jpg\?v=\d{4}-\d{2}$/,
+  );
+  assert.equal(twitterUrl, openGraphUrl);
 });
 
 test("MosaicoraOgJsonLd renders the v3 contract", () => {

@@ -18,7 +18,7 @@ The framework-agnostic helpers are also available directly from
 import type { Metadata } from "next";
 import { createMosaicoraMetadata } from "@mosaicora/plugin-nextjs";
 
-const canonicalUrl = "https://example.com/products/view?sku=123&campaign=launch";
+const canonicalUrl = "https://example.com/products/view";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -27,14 +27,22 @@ export async function generateMetadata(): Promise<Metadata> {
       canonicalHref: canonicalUrl,
       fallbackHref: canonicalUrl,
       alt: "Professional product preview",
+      cacheBuster: "monthly",
     }),
   };
 }
 ```
 
-The generated image URL preserves every query parameter in deterministic order,
-places `.jpg` before the query string, ignores hashes, and keeps UTF-8 paths
-readable.
+The generated image URL preserves genuine canonical query parameters in
+deterministic order, places `.jpg` before the query string, ignores hashes, and
+keeps UTF-8 paths readable. `cacheBuster` is optional; when enabled it adds a
+UTC-based `v` parameter (for example, `?v=2026-07` for `"monthly"`).
+
+Social platforms can store a link preview and image after the first crawl.
+Changing the image URL helps a platform fetch a fresh asset when it re-scrapes
+the page metadata, but it cannot force Slack, LinkedIn, X, Facebook, or another
+platform to refresh an already cached preview. Use the least frequent suitable
+schedule; `"monthly"` is recommended for most sites.
 
 ## Render a v3 JSON-LD override
 
@@ -44,7 +52,7 @@ use exactly:
 ```tsx
 import { MosaicoraOgJsonLd } from "@mosaicora/plugin-nextjs";
 
-const canonicalUrl = "https://example.com/products/view?sku=123";
+const canonicalUrl = "https://example.com/products/view";
 
 export default function ProductJsonLd() {
   return (
@@ -83,6 +91,8 @@ semantic contract is documented in
 - `getMosaicoraOgImageUrl`
 - `createMosaicoraMetadata`
 - `MosaicoraOgJsonLd`
+- `buildOgImageCacheBuster`
+- `OgImageCacheBuster`
 
 The package also re-exports the core URL and JSON-LD helpers, plus
 `MosaicoraOgOverride`, `MosaicoraOgSemanticValues`, role-specific types, and
@@ -90,7 +100,7 @@ the other public core types.
 
 ## Development
 
-Core `1.0.1` must be available from npm before installing this repository.
+Core `1.0.2` must be available from npm before installing this repository.
 
 ```bash
 pnpm install

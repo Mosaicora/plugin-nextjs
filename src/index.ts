@@ -1,5 +1,6 @@
 export {
   buildMosaicoraOgJsonLd,
+  buildOgImageCacheBuster,
   buildOgImageUrl,
   buildSortedEncodedQuery,
   MOSAICORA_OG_NAMESPACE,
@@ -26,6 +27,7 @@ export type {
   MosaicoraOgSemanticValues,
   MosaicoraOgStringListRole,
   MosaicoraOgTextRole,
+  OgImageCacheBuster,
   OgImageUrlOptions,
   SchemaType,
 } from "@mosaicora/plugin-mosaicora-core";
