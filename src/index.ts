@@ -9,7 +9,6 @@ export {
   OG_IMAGE_HEIGHT,
   OG_IMAGE_TYPE,
   OG_IMAGE_WIDTH,
-  resolveSourceUrl,
   SCHEMA_ORG_CONTEXT,
   serializeJsonLd,
 } from "@mosaicora/plugin-mosaicora-core";

@@ -10,43 +10,37 @@ import {
   type OgImageCacheBuster,
 } from "../src/index.ts";
 
-test("getMosaicoraOgImageUrl preserves and sorts all homepage queries", () => {
+test("getMosaicoraOgImageUrl encodes and sorts all homepage queries", () => {
   assert.equal(
     getMosaicoraOgImageUrl({
       siteId: "site-123",
-      fallbackHref: "https://example.com/?sku=123&page=2&campaign=launch",
+      pageHref: "https://example.com/?sku=123&page=2&campaign=launch",
     }),
-    "https://cdn.mosaicora.io/s/site-123.jpg?campaign=launch&page=2&sku=123",
+    "https://cdn.mosaicora.io/s/site-123/%3Fcampaign%3Dlaunch%26page%3D2%26sku%3D123.jpg",
   );
 });
 
-test("getMosaicoraOgImageUrl prefers a nested canonical URL", () => {
+test("getMosaicoraOgImageUrl encodes a nested page URL", () => {
   assert.equal(
     getMosaicoraOgImageUrl({
       siteId: "site-123",
-      canonicalHref:
+      pageHref:
         "https://example.com/products/view/?sku=123&page=2&campaign=launch",
-      fallbackHref: "https://fallback.example/ignored",
     }),
-    "https://cdn.mosaicora.io/s/site-123/products/view.jpg?campaign=launch&page=2&sku=123",
+    "https://cdn.mosaicora.io/s/site-123/products/view%3Fcampaign%3Dlaunch%26page%3D2%26sku%3D123.jpg",
   );
 });
 
-test("getMosaicoraOgImageUrl falls back from an invalid canonical URL", () => {
-  assert.equal(
-    getMosaicoraOgImageUrl({
-      siteId: "site-123",
-      canonicalHref: "invalid",
-      fallbackHref: "https://example.com/fallback?locale=en",
-    }),
-    "https://cdn.mosaicora.io/s/site-123/fallback.jpg?locale=en",
+test("getMosaicoraOgImageUrl rejects an invalid page URL", () => {
+  assert.throws(() =>
+    getMosaicoraOgImageUrl({ siteId: "site-123", pageHref: "invalid" }),
   );
 });
 
 test("createMosaicoraMetadata returns the expected Next metadata shape", () => {
   const metadata = createMosaicoraMetadata({
     siteId: "site-123",
-    fallbackHref: "https://example.com/products/view/?sku=123",
+    pageHref: "https://example.com/products/view/?sku=123",
     alt: "Professional product preview",
   });
 
@@ -54,7 +48,7 @@ test("createMosaicoraMetadata returns the expected Next metadata shape", () => {
     openGraph: {
       images: [
         {
-          url: "https://cdn.mosaicora.io/s/site-123/products/view.jpg?sku=123",
+          url: "https://cdn.mosaicora.io/s/site-123/products/view%3Fsku%3D123.jpg",
           width: 1200,
           height: 630,
           type: "image/jpeg",
@@ -64,7 +58,7 @@ test("createMosaicoraMetadata returns the expected Next metadata shape", () => {
     },
     twitter: {
       card: "summary_large_image",
-      images: ["https://cdn.mosaicora.io/s/site-123/products/view.jpg?sku=123"],
+      images: ["https://cdn.mosaicora.io/s/site-123/products/view%3Fsku%3D123.jpg"],
     },
   });
 });
@@ -73,7 +67,7 @@ test("createMosaicoraMetadata shares a cache-busting image URL across platforms"
   const cacheBuster: OgImageCacheBuster = "monthly";
   const metadata = createMosaicoraMetadata({
     siteId: "site-123",
-    fallbackHref: "https://example.com/products/view",
+    pageHref: "https://example.com/products/view",
     cacheBuster,
   });
   const openGraphImages = metadata.openGraph?.images;
@@ -104,7 +98,7 @@ test("createMosaicoraMetadata shares a cache-busting image URL across platforms"
 test("createMosaicoraMetadata shares an explicit cache version across platforms", () => {
   const metadata = createMosaicoraMetadata({
     siteId: "site-123",
-    fallbackHref: "https://example.com/products/view?v=legacy",
+    pageHref: "https://example.com/products/view?v=legacy",
     cacheBuster: "monthly",
     cacheVersion: "release-42",
   });
@@ -170,10 +164,9 @@ test("getMosaicoraOgImageUrl ignores hashes and keeps utf-8 paths readable", () 
   assert.equal(
     getMosaicoraOgImageUrl({
       siteId: "site-123",
-      canonicalHref:
+      pageHref:
         "https://example.com/%E4%B8%AD%E8%8F%AF%E4%BA%BA%E6%B0%91%E5%85%B1%E5%92%8C%E5%9B%BD?lang=zh#overview",
-      fallbackHref: "https://fallback.example/ignored",
     }),
-    "https://cdn.mosaicora.io/s/site-123/中華人民共和国.jpg?lang=zh",
+    "https://cdn.mosaicora.io/s/site-123/中華人民共和国%3Flang%3Dzh.jpg",
   );
 });

@@ -24,8 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     ...createMosaicoraMetadata({
       siteId: "321cac22d2103fb1660c50bd",
-      canonicalHref: canonicalUrl,
-      fallbackHref: canonicalUrl,
+      pageHref: canonicalUrl,
       alt: "Professional product preview",
       cacheVersion: "release-2026-07",
     }),
@@ -33,13 +32,15 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 ```
 
-The generated image URL preserves genuine canonical query parameters in
-deterministic order, places `.jpg` before the query string, ignores hashes, and
-keeps UTF-8 paths readable. `cacheVersion` sets an explicit `v` parameter (for
-example, `?v=release-2026-07`). `cacheBuster` is optional and adds a UTC-based
-`v` parameter (for example, `?v=2026-07` for `"monthly"`) when no manual
-version is supplied. A non-empty `cacheVersion` takes precedence over
-`cacheBuster` and over any `v` in the canonical URL.
+The generated image URL puts non-tracking canonical query parameters in a
+deterministically sorted, percent-encoded path suffix before `.jpg`, ignores
+hashes, and keeps UTF-8 paths readable. `cacheVersion` sets an explicit `v`
+parameter after `.jpg` (for example, `?v=release-2026-07`). `cacheBuster` is
+optional and adds a UTC-based `v` parameter (for example, `?v=2026-07` for
+`"monthly"`) when no manual version is supplied. The CDN ignores all
+post-`.jpg` query parameters when it resolves the source page, so `v` is
+cache-only. A non-empty `cacheVersion` takes precedence over `cacheBuster` and
+over any `v` in the canonical URL.
 
 Social platforms can store a link preview and image after the first crawl.
 Changing the image URL helps a platform fetch a fresh asset when it re-scrapes
@@ -103,7 +104,7 @@ the other public core types.
 
 ## Development
 
-Core `1.0.3` must be available from npm before installing this repository.
+Core `1.0.4` must be available from npm before installing this repository.
 
 ```bash
 pnpm install

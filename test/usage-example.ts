@@ -12,8 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "Example page",
     ...createMosaicoraMetadata({
       siteId: "site-123",
-      canonicalHref: "https://example.com/products/view?sku=123",
-      fallbackHref: "https://example.com/products/view?sku=123",
+      pageHref: "https://example.com/products/view?sku=123",
     }),
   };
 }
@@ -61,7 +60,7 @@ const incorrectValue: MosaicoraOgOverride = {
 
 const imageOptions: OgImageUrlOptions = {
   siteId: "site-123",
-  fallbackHref: "https://example.com/?sku=123",
+  pageHref: "https://example.com/?sku=123",
   // @ts-expect-error Query allow-listing was removed in v1.
   allowList: ["sku"],
 };
